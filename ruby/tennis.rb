@@ -65,9 +65,9 @@ class TennisGame2
       
   def won_point(player_name)
     if player_name == @player_one_name
-      p1Score()
+      player_one_pointsScore()
     else
-      p2Score()
+      player_two_pointsScore()
     end
   end
 
@@ -89,65 +89,65 @@ class TennisGame2
         result = 'Deuce'
     end
     
-    p1res = ''
-    p2res = ''
+    player_one_pointsres = ''
+    player_two_pointsres = ''
     if (@player_one_points > 0 and @player_two_points==0)
       if (@player_one_points==1)
-        p1res = 'Fifteen'
+        player_one_pointsres = 'Fifteen'
       end
       if (@player_one_points==2)
-        p1res = 'Thirty'
+        player_one_pointsres = 'Thirty'
       end
       if (@player_one_points==3)
-        p1res = 'Forty'
+        player_one_pointsres = 'Forty'
       end
-      p2res = 'Love'
-      result = p1res + '-' + p2res
+      player_two_pointsres = 'Love'
+      result = player_one_pointsres + '-' + player_two_pointsres
     end
     if (@player_two_points > 0 and @player_one_points==0)
       if (@player_two_points==1)
-        p2res = 'Fifteen'
+        player_two_pointsres = 'Fifteen'
       end
       if (@player_two_points==2)
-        p2res = 'Thirty'
+        player_two_pointsres = 'Thirty'
       end
       if (@player_two_points==3)
-        p2res = 'Forty'
+        player_two_pointsres = 'Forty'
       end
       
-      p1res = 'Love'
-      result = p1res + '-' + p2res
+      player_one_pointsres = 'Love'
+      result = player_one_pointsres + '-' + player_two_pointsres
     end
     
     if (@player_one_points>@player_two_points and @player_one_points < 4)
       if (@player_one_points==2)
-        p1res='Thirty'
+        player_one_pointsres='Thirty'
       end
       if (@player_one_points==3)
-        p1res='Forty'
+        player_one_pointsres='Forty'
       end
       if (@player_two_points==1)
-        p2res='Fifteen'
+        player_two_pointsres='Fifteen'
       end
       if (@player_two_points==2)
-        p2res='Thirty'
+        player_two_pointsres='Thirty'
       end
-      result = p1res + '-' + p2res
+      result = player_one_pointsres + '-' + player_two_pointsres
     end
     if (@player_two_points>@player_one_points and @player_two_points < 4)
       if (@player_two_points==2)
-        p2res='Thirty'
+        player_two_pointsres='Thirty'
       end
       if (@player_two_points==3)
-        p2res='Forty'
+        player_two_pointsres='Forty'
       end
       if (@player_one_points==1)
-        p1res='Fifteen'
+        player_one_pointsres='Fifteen'
       end
       if (@player_one_points==2)
-        p1res='Thirty'
+        player_one_pointsres='Thirty'
       end
-      result = p1res + '-' + p2res
+      result = player_one_pointsres + '-' + player_two_pointsres
     end
     if (@player_one_points > @player_two_points and @player_two_points >= 3)
       result = 'Advantage ' + @player_one_name
@@ -164,55 +164,65 @@ class TennisGame2
     result
   end
 
-  def setp1Score(number)
+  def setplayer_one_pointsScore(number)
     (0..number).each do |i|
-        p1Score()
+        player_one_pointsScore()
     end
   end
 
-  def setp2Score(number)
+  def setplayer_two_pointsScore(number)
     (0..number).each do |i|
-      p2Score()
+      player_two_pointsScore()
     end
   end
 
-  def p1Score
+  def player_one_pointsScore
     @player_one_points +=1
   end
   
-  def p2Score
+  def player_two_pointsScore
     @player_two_points +=1
   end
 end
 
 class TennisGame3
   def initialize(player_one_name, player_two_name)
-    @p1N = player_one_name
-    @p2N = player_two_name
-    @p1 = 0
-    @p2 = 0
+    @player_one_name = player_one_name
+    @player_two_name = player_two_name
+    @player_one_points = 0
+    @player_two_points = 0
   end
       
-  def won_point(n)
-    if n == @p1N
-        @p1 += 1
-    else
-        @p2 += 1
-    end
+  def won_point(player_name)
+    player_name == @player_one_name ? @player_one_points += 1 : @player_two_points += 1
   end
   
   def score
-    if (@p1 < 4 and @p2 < 4) and (@p1 + @p2 < 6)
-      p = ['Love', 'Fifteen', 'Thirty', 'Forty']
-      s = p[@p1]
-      @p1 == @p2 ? s + '-All' : s + '-' + p[@p2]
+    if not_advantage_or_win?
+      scores = ['Love', 'Fifteen', 'Thirty', 'Forty']
+      if same_points? 
+         "#{scores[@player_one_points]}-All" 
+      else
+         "#{scores[@player_one_points]}-#{scores[@player_two_points]}"
+      end
     else
-      if (@p1 == @p2)
+      if same_points?
         'Deuce'
       else
-        s = @p1 > @p2 ? @p1N : @p2N
-        (@p1-@p2)*(@p1-@p2) == 1 ? 'Advantage ' + s : 'Win for ' + s
+        leading_player = @player_one_points > @player_two_points ? @player_one_name : @player_two_name
+        (@player_one_points - @player_two_points).abs == 1 ? "Advantage #{leading_player}" : "Win for #{leading_player}"
       end
     end
   end
+
+  def not_advantage_or_win?
+    @player_one_points < 4 && @player_two_points < 4 && @player_one_points + @player_two_points < 6
+  end
+
+  def same_points?
+    @player_one_points == @player_two_points
+  end
+
+  
+
 end
