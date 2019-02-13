@@ -45,7 +45,12 @@ TEST_CASES = [
    [6, 4, 'Win for player1', 'player1', 'player2'],
    [4, 6, 'Win for player2', 'player1', 'player2'], 
    [6, 5, 'Advantage player1', 'player1', 'player2'],
-   [5, 6, 'Advantage player2', 'player1', 'player2'] 
+   [5, 6, 'Advantage player2', 'player1', 'player2'],
+
+   [6, 4, 'Win for John', 'John', 'Bob'],
+   [4, 6, 'Win for Bob', 'John', 'Bob'],
+   [6, 5, 'Advantage John', 'John', 'Bob'],
+   [5, 6, 'Advantage Bob', 'John', 'Bob']
 ]
 
 class TestTennis < Test::Unit::TestCase
